@@ -15,7 +15,7 @@ class MenuController extends Controller
     public function index()
     {
         return view('dashboard.menu',['menu'=> Menu::all(),'loggedUser'=>session('loggedUser')]);
-        
+
     }
 
     /**
@@ -44,14 +44,14 @@ class MenuController extends Controller
             'image'=>'mimes:png,jpg,jpeg',
             'category'=>'required|in:Fries,Pasta,Pizza,Burger',
         ]);
-        
+
         // return $request->input();
         $menu = new Menu();
 
         if($request->hasFile('image')){
             $menu->image = $request->category.'_'.uniqid().'.'.$request->image->extension();
             $request->image->storeAs('public/images',$menu->image);
-            
+
         }else{
             $menu->image = 'Default.png';
 
@@ -63,13 +63,16 @@ class MenuController extends Controller
 
         $save=$menu->save();
         if($save){
-            return back()->with('fail','gg');
+            return back()->with('success','Product Added Successfully');
+
+        }else{
+            return back()->with('fail','Something Wont Wrong');
 
         }
 
-        
 
-    
+
+
     }
 
     /**
@@ -103,20 +106,31 @@ class MenuController extends Controller
      */
     public function update(Request $request, menu $menu)
     {
-        // return $request->input();
+        $request->validate([
+            'name'=>'required',
+            'description'=>'required',
+            'price'=>'required|integer',
+            'category'=>'required|in:Fries,Pasta,Pizza,Burger',
+        ]);
 
-        if(isset($request->image)){
-            $menu->image = $request->image;
-            
+        if($request->hasFile('image')){
+            $menu->image = $request->category.'_'.uniqid().'.'.$request->image->extension();
+            $request->image->storeAs('public/images',$menu->image);
+
         }
         $menu->name = $request->name;
         $menu->description = $request->description;
         $menu->category = $request->category;
         $menu->price = $request->price;
 
-        $menu->save();
+        $save=$menu->save();
+        if($save){
+            return back()->with('success','Product Updated Successfully');
 
-        return back();
+        }else{
+            return back()->with('fail','Something Wont Wrong');
+
+        }
 
 
     }

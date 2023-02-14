@@ -54,10 +54,10 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  mx-auto ">
-              <li class="nav-item active">
+              <li class="nav-item ">
                 <a class="nav-link" href="{{route('Home')}}">Home <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="{{route('homemenu')}}">Menu</a>
               </li>
             </ul>
@@ -117,10 +117,11 @@
 
       <ul class="filters_menu">
         <li class="active" data-filter="*">All</li>
-        <li data-filter=".Burger">Burger</li>
-        <li data-filter=".Pizza">Pizza</li>
-        <li data-filter=".Pasta">Pasta</li>
-        <li data-filter=".Fries">Fries</li>
+        @foreach ($categories as $category)
+        <li data-filter=".{{$category}}">{{$category}}</li>
+
+        @endforeach
+
       </ul>
 
       <div class="filters-content">
@@ -138,6 +139,9 @@
                   </h5>
                   <p>
                     {{$item['description']}}
+                  </p>
+                  <p class="badge badge-warning">
+                    {{$item['category']}}
                   </p>
                   <div class="options">
                     <h6>

@@ -36,10 +36,28 @@
           <li>{{$message}}</li>
         </ul>
          @enderror
+         @if (Session::get('fail'))
+           <ul class="mt-3">
+            <li>{{Session::get('fail')}}</li>
+           </ul>
+
+         @endif
 
 
       </div>
     </div>
+    <div class="d-flex align-items-center justify-content-center" >
+        <div class="bg-gradient-success shadow-success border-radius-lg mb-3 text-white text-capitalize ps-3" style="width: 80%">
+
+           @if (Session::get('success'))
+           <ul class="mt-3">
+            <li>{{Session::get('success')}}</li>
+           </ul>
+
+         @endif
+
+        </div>
+      </div>
 
     <div class="col-12">
       <div class="card my-4">
@@ -176,7 +194,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <form method="POST" id="menuform">
+              <form method="POST" id="menuform" enctype="multipart/form-data">
               @csrf
               @method('PUT')
               <div class="input-group mb-3">

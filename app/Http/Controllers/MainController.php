@@ -29,6 +29,8 @@ class MainController extends Controller
 
     function menu(){
         $data = ['items'=>menu::all(),'loggedUser'=>session('loggedUser')];
+        $data['categories'] = DB::table('menus')->distinct()->pluck('category');
+        // dd($data);
         return view('menu',$data);
     }
 
@@ -81,7 +83,7 @@ class MainController extends Controller
         ])->first();
 
         if(!$check_token){
-            back();
+           return back()->with('fail','password aleady changed');
         }else{
             Admin::where('email',$request->email)->update([
                 'pass'=>Hash::make($request->pass)
